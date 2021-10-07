@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, Image, Flex } from "@chakra-ui/react";
-import { Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Pokemon } from "./utils/types";
 import "./App.css";
 
@@ -58,49 +57,36 @@ const App = () => {
 	useEffect(() => {
 		fetchPokemon(1);
 	}, []);
+	console.log(pokemon);
+	if (!pokemon.id) return <div>Loading...</div>;
 	return (
-		<Box bg="green.400" maxW="3xl" borderWidth="1px" borderRadius="lg">
-			<Flex justifyContent="space-between" alignItems="center" mb="2">
-				<Box>
-					<Radar data={data} width={40} height={30} />
-				</Box>
-				<Box>
-					<Flex justifyContent="space-between" alignItems="center">
-						<Text fontSize="2xl">{pokemon.name.toUpperCase()}</Text>
-						<Text fontSize="2xl">#{trimId(pokemon.id)}</Text>
-					</Flex>
-					<Image
-						boxSize="200px"
-						objectFit="cover"
-						src={`${pokemon.sprites.front_default}`}
-						alt={`default pic of ${pokemon.name}`}
-					/>
-					<Flex justifyContent="space-between" alignItems="center">
-						<Text fontSize="2xl">
-							Height: {parseMetrics(pokemon.height)}m
-						</Text>
-						<Text fontSize="2xl">
-							Weight: {parseMetrics(pokemon.weight)}kg
-						</Text>
-					</Flex>
+		<>
+			<Bar data={data} width={1} height={5} />
 
-					{pokemon.types.map((type: any) => (
-						<Text fontSize="2xl" key={type.type.name}>
-							{type.type.name}
-						</Text>
-					))}
+			<p>{pokemon.name.toUpperCase()}</p>
+			<p>#{trimId(pokemon.id)}</p>
 
-					<button
-						onClick={(): void => {
-							console.log(pokemon.sprites.front_default);
-						}}>
-						Click
-					</button>
-					<button onClick={previousPokemon}>Prev</button>
-					<button onClick={nextPokemon}>Next</button>
-				</Box>
-			</Flex>
-		</Box>
+			<img
+				src={`${pokemon.sprites.front_default}`}
+				alt={`default pic of ${pokemon.name}`}
+			/>
+
+			<p>Height: {parseMetrics(pokemon.height)}m</p>
+			<p>Weight: {parseMetrics(pokemon.weight)}kg</p>
+
+			{pokemon.types.map((type: any) => (
+				<p key={type.type.name}>{type.type.name}</p>
+			))}
+
+			<button
+				onClick={(): void => {
+					console.log(pokemon.sprites.front_default);
+				}}>
+				Click
+			</button>
+			<button onClick={previousPokemon}>Prev</button>
+			<button onClick={nextPokemon}>Next</button>
+		</>
 	);
 };
 
