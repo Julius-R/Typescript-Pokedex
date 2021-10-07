@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Box, Text, Image, Flex} from "@chakra-ui/react"
+import { Radar } from 'react-chartjs-2';
 import {Pokemon} from './utils/types'
 import './App.css';
 
@@ -14,24 +15,10 @@ const App = () => {
        labels: ['Hp', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'],
   datasets: [
     {
-      label: 'Pokemon Stats',
+      label: `${name.toUpperCase()} Stats`,
       data: stats.map((stat: any) => stat.base_stat),
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
+       backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
       borderWidth: 1,
     },
   ],
@@ -47,21 +34,50 @@ const App = () => {
     pokemon.id === 1 ? fetchPokemon(898) : fetchPokemon(pokemon.id - 1);
   }
 
+  const parseMetrics = (num: number) :string => {
+    return `${+(num / 10).toFixed(2)}`
+  }
+
+  const trimId = (id: number) :string => {
+    if(id < 10){
+      return `00${id}`
+    }else if(id < 100 ){
+      return `0${id}`
+    }else{
+      return `${id}`
+    }
+  }
+
   useEffect(() => {
     fetchPokemon(1);
   }, [])
   return (
-    <div className="App">
-      <p>{pokemon.name}</p>
-      {/* <img src={pokemon.sprites.front_default} alt={`default pic of ${pokemon.name}`}/> */}
-      <Bar data={data} width={20}
+    <Box maxW="sm" >
+     <Flex justifyContent="space-between" alignItems="center" >
+       <Text fontSize="2xl">{pokemon.name.toUpperCase()}</Text>
+     <Text fontSize="2xl">#{trimId(pokemon.id)}</Text>
+     </Flex>
+      <Image boxSize="200px"
+    objectFit="cover" src={`${pokemon.sprites.front_default}`} alt={`default pic of ${pokemon.name}`}/> 
+    <Flex justifyContent="space-between" alignItems="center" >
+      
+      <Text fontSize="2xl">Height: {parseMetrics(pokemon.height)}m</Text>
+      <Text fontSize="2xl">Weight: {parseMetrics(pokemon.weight)}kg</Text>
+    </Flex>
+    
+      
+      {pokemon.types.map((type: any) => (
+        <Text fontSize="2xl" key={type.type.name}>{type.type.name}</Text>
+      ))}
+      
+      <Radar data={data} width={20}
 	height={10}/>
       <button onClick={(): void => {
         console.log(pokemon.sprites.front_default)
       }}>Click</button>
       <button onClick={previousPokemon}>Prev</button>
       <button onClick={nextPokemon}>Next</button>
-    </div>
+    </Box>
   );
 }
 
