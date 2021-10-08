@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Pokemon } from "./utils/types";
-import "./App.css";
+import "./styles/styles.sass";
 
 const App = () => {
 	const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
