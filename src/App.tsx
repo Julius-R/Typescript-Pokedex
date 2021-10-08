@@ -60,33 +60,44 @@ const App = () => {
 	console.log(pokemon);
 	if (!pokemon.id) return <div>Loading...</div>;
 	return (
-		<>
-			<Bar data={data} width={1} height={5} />
+		<div className="container">
+			<section className="pokemon">
+				<section className="pokemon__stats">
+					<Bar data={data} height={250} />
+				</section>
 
-			<p>{pokemon.name.toUpperCase()}</p>
-			<p>#{trimId(pokemon.id)}</p>
+				<section className="pokemon__info">
+					<p>{pokemon.name.toUpperCase()}</p>
+					<p>#{trimId(pokemon.id)}</p>
 
-			<img
-				src={`${pokemon.sprites.front_default}`}
-				alt={`default pic of ${pokemon.name}`}
-			/>
+					<img
+						src={`${pokemon.sprites.front_default}`}
+						alt={`default pic of ${pokemon.name}`}
+					/>
 
-			<p>Height: {parseMetrics(pokemon.height)}m</p>
-			<p>Weight: {parseMetrics(pokemon.weight)}kg</p>
+					<p>Height: {parseMetrics(pokemon.height)}m</p>
+					<p>Weight: {parseMetrics(pokemon.weight)}kg</p>
 
-			{pokemon.types.map((type: any) => (
-				<p key={type.type.name}>{type.type.name}</p>
-			))}
+					{pokemon.types.map((type: any) => (
+						<p key={type.type.name}>{type.type.name}</p>
+					))}
 
-			<button
-				onClick={(): void => {
-					console.log(pokemon.sprites.front_default);
-				}}>
-				Click
-			</button>
-			<button onClick={previousPokemon}>Prev</button>
-			<button onClick={nextPokemon}>Next</button>
-		</>
+					<button
+						className="btn"
+						onClick={(): void => {
+							console.log(pokemon.sprites.front_default);
+						}}>
+						Click
+					</button>
+					<button className="btn" onClick={previousPokemon}>
+						Prev
+					</button>
+					<button className="btn" onClick={nextPokemon}>
+						Next
+					</button>
+				</section>
+			</section>
+		</div>
 	);
 };
 
