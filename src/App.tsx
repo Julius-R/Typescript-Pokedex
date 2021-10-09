@@ -23,8 +23,7 @@ const App = () => {
 				{
 					label: `${name.toUpperCase()} Stats`,
 					data: stats.map((stat: any) => stat.base_stat),
-					backgroundColor: "rgba(255, 99, 132, 0.2)",
-					borderColor: "rgba(255, 99, 132, 1)",
+					backgroundColor: "rgba(30,29,29,1)",
 					borderWidth: 1
 				}
 			]
@@ -57,7 +56,7 @@ const App = () => {
 	useEffect(() => {
 		fetchPokemon(1);
 	}, []);
-	console.log(pokemon);
+
 	if (!pokemon.id) return <div>Loading...</div>;
 	return (
 		<div className="container">
@@ -67,34 +66,48 @@ const App = () => {
 				</section>
 
 				<section className="pokemon__info">
-					<p>{pokemon.name.toUpperCase()}</p>
-					<p>#{trimId(pokemon.id)}</p>
+					<section className="pokemon__heading">
+						<p>{pokemon.name.toUpperCase()}</p>
+						<p>#{trimId(pokemon.id)}</p>
+					</section>
 
-					<img
-						src={`${pokemon.sprites.front_default}`}
-						alt={`default pic of ${pokemon.name}`}
-					/>
+					<section className="pokemon__image">
+						<img
+							src={`${pokemon.sprites.front_default}`}
+							alt={`default pic of ${pokemon.name}`}
+						/>
+					</section>
 
-					<p>Height: {parseMetrics(pokemon.height)}m</p>
-					<p>Weight: {parseMetrics(pokemon.weight)}kg</p>
+					<section className="pokemon__data">
+						<section className="pokemon__types">
+							{pokemon.types.length === 1 ? (
+								<p>Type</p>
+							) : (
+								<p>Types</p>
+							)}
+							<ul>
+								{pokemon.types.map((type: any) => (
+									<li key={type.type.name}>
+										{type.type.name}
+									</li>
+								))}
+							</ul>
+						</section>
 
-					{pokemon.types.map((type: any) => (
-						<p key={type.type.name}>{type.type.name}</p>
-					))}
+						<section className="pokemon__biology">
+							<p>Height: {parseMetrics(pokemon.height)}m</p>
+							<p>Weight: {parseMetrics(pokemon.weight)}kg</p>
+						</section>
+					</section>
 
-					<button
-						className="btn"
-						onClick={(): void => {
-							console.log(pokemon.sprites.front_default);
-						}}>
-						Click
-					</button>
-					<button className="btn" onClick={previousPokemon}>
-						Prev
-					</button>
-					<button className="btn" onClick={nextPokemon}>
-						Next
-					</button>
+					<section className="toggle-btns">
+						<button className="btn" onClick={previousPokemon}>
+							Prev
+						</button>
+						<button className="btn" onClick={nextPokemon}>
+							Next
+						</button>
+					</section>
 				</section>
 			</section>
 		</div>
